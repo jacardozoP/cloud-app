@@ -1,0 +1,283 @@
+[
+  {
+    "id": 1,
+    "code": "Ac",
+    "name": "Altocúmulos",
+    "category": "medias",
+    "image": "assets/images/Ac.jpg",
+    "definition": "Nubes medias formadas por bancos, capas o parches de elementos redondeados.",
+    "altitude": "Se ubican aproximadamente entre 2000 y 6000 m.",
+    "appearance": "Masas o elementos blancos o grisáceos, a veces dispuestos en filas, ondas o patrones repetitivos.",
+    "composition": "Principalmente gotitas de agua; en niveles fríos pueden contener cristales de hielo.",
+    "weather_meaning": "Pueden indicar humedad en niveles medios y, en ciertos casos, cambios de tiempo o inestabilidad próxima.",
+    "interesting_fact": "Algunas formaciones de altocúmulos al amanecer pueden anticipar tormentas más tarde.",
+    "category_reason": "Pertenecen a las nubes medias porque su base y desarrollo se sitúan en niveles intermedios de la troposfera."
+  },
+  {
+    "id": 2,
+    "code": "As",
+    "name": "Altostratos",
+    "category": "medias",
+    "image": "assets/images/As.jpg",
+    "definition": "Capa nubosa gris o azulada que cubre total o parcialmente el cielo.",
+    "altitude": "Se desarrolla en niveles medios, entre 2000 y 6000 m aproximadamente.",
+    "appearance": "Manto uniforme, translúcido u opaco, que puede dejar ver el sol de forma difusa.",
+    "composition": "Gotitas de agua y cristales de hielo.",
+    "weather_meaning": "Suelen preceder sistemas frontales y precipitación continua.",
+    "interesting_fact": "Cuando no son muy densos, el sol puede verse como a través de un vidrio esmerilado.",
+    "category_reason": "Se clasifican como nubes medias porque predominan en niveles intermedios de la atmósfera."
+  },
+  {
+    "id": 3,
+    "code": "Cb",
+    "name": "Cumulonimbos",
+    "category": "vertical",
+    "image": "assets/images/Cb.jpg",
+    "definition": "Nubes de gran desarrollo vertical asociadas a tormentas intensas.",
+    "altitude": "Su base puede ser baja, pero su cima alcanza grandes alturas en la troposfera.",
+    "appearance": "Grandes masas oscuras, imponentes, con fuerte crecimiento vertical y frecuente forma de yunque en la cima.",
+    "composition": "Gotitas de agua, cristales de hielo, granizo y precipitación.",
+    "weather_meaning": "Indican tormentas, rayos, granizo, chubascos intensos y turbulencia severa.",
+    "interesting_fact": "Son una de las nubes más importantes en meteorología aeronáutica por el peligro que representan.",
+    "category_reason": "Pertenecen al grupo de desarrollo vertical porque crecen desde niveles bajos hasta niveles muy altos."
+  },
+  {
+    "id": 4,
+    "code": "Cc",
+    "name": "Cirrocúmulos",
+    "category": "altas",
+    "image": "assets/images/Cc.jpg",
+    "definition": "Nubes altas compuestas por pequeños elementos blancos granulosos o en ondas.",
+    "altitude": "Se ubican generalmente por encima de los 6000 m.",
+    "appearance": "Pequeños gránulos, rizos o escamas blancas agrupadas en capas, bandas o patrones repetitivos.",
+    "composition": "Principalmente cristales de hielo, a veces con agua sobreenfriada.",
+    "weather_meaning": "Pueden indicar cambios en niveles altos o cierta inestabilidad atmosférica.",
+    "interesting_fact": "Con frecuencia producen un aspecto de cielo aborregado muy fino.",
+    "category_reason": "Son nubes altas porque se desarrollan en niveles superiores y fríos de la troposfera."
+  },
+  {
+    "id": 5,
+    "code": "Ci",
+    "name": "Cirros",
+    "category": "altas",
+    "image": "assets/images/Ci.jpg",
+    "definition": "Nubes altas, delgadas y fibrosas, formadas por cristales de hielo.",
+    "altitude": "Aparecen por encima de los 6000 m.",
+    "appearance": "Filamentos blancos, finos y delicados, a menudo con aspecto de plumas o hebras.",
+    "composition": "Cristales de hielo.",
+    "weather_meaning": "Con frecuencia indican la aproximación de un frente o cambios de tiempo en las próximas horas.",
+    "interesting_fact": "Son de las nubes más fáciles de reconocer por su aspecto plumoso.",
+    "category_reason": "Pertenecen a las nubes altas porque se forman en la parte superior de la troposfera."
+  },
+  {
+    "id": 6,
+    "code": "Cs",
+    "name": "Cirrostratos",
+    "category": "altas",
+    "image": "assets/images/Cs.jpg",
+    "definition": "Velo nuboso alto y delgado que cubre total o parcialmente el cielo.",
+    "altitude": "Se encuentran normalmente por encima de los 6000 m.",
+    "appearance": "Capa blanquecina, fina y translúcida, que puede generar halos alrededor del sol o la luna.",
+    "composition": "Cristales de hielo.",
+    "weather_meaning": "Suelen anunciar la aproximación de un sistema frontal.",
+    "interesting_fact": "El halo solar o lunar es uno de sus rasgos más característicos.",
+    "category_reason": "Se clasifican como nubes altas por desarrollarse en niveles muy elevados y fríos."
+  },
+  {
+    "id": 7,
+    "code": "Ct",
+    "name": "Estelas de condensación",
+    "category": "especiales",
+    "image": "assets/images/Ct.jpg",
+    "definition": "Trazas nubosas lineales formadas por la condensación del vapor de agua emitido por aeronaves en atmósferas frías.",
+    "altitude": "Se observan a gran altitud, donde vuelan las aeronaves y la temperatura es muy baja.",
+    "appearance": "Líneas o bandas alargadas, estrechas y brillantes, que pueden persistir y expandirse.",
+    "composition": "Cristales de hielo.",
+    "weather_meaning": "No representan una nube natural clásica, pero evidencian condiciones de humedad y temperatura favorables a su formación.",
+    "interesting_fact": "Pueden persistir y evolucionar hasta parecer velos nubosos extensos.",
+    "category_reason": "Se incluyen como fenómeno especial porque no son una nube natural clásica, sino una formación inducida por aeronaves."
+  },
+  {
+    "id": 8,
+    "code": "Cu",
+    "name": "Cúmulos",
+    "category": "bajas",
+    "image": "assets/images/Cu.jpg",
+    "definition": "Nubes de base plana y contornos bien definidos que suelen presentar desarrollo vertical moderado.",
+    "altitude": "Su base se encuentra normalmente a baja altura, por debajo de los 2000 m.",
+    "appearance": "Aspecto algodonoso o esponjoso, con protuberancias redondeadas semejantes a coliflor.",
+    "composition": "Principalmente gotitas de agua.",
+    "weather_meaning": "Son comunes en días cálidos y soleados; algunas especies pueden evolucionar hacia formas más desarrolladas.",
+    "interesting_fact": "El cúmulo humilis suele asociarse a buen tiempo.",
+    "category_reason": "Se clasifican como nubes bajas porque su base se forma a poca altitud, aunque puedan crecer verticalmente."
+  },
+  {
+    "id": 9,
+    "code": "Ns",
+    "name": "Nimbostratos",
+    "category": "bajas",
+    "image": "assets/images/Ns.jpg",
+    "definition": "Nubes oscuras y densas que forman capas extensas y producen precipitación continua.",
+    "altitude": "Su base suele ser baja, aunque la nube puede extenderse verticalmente hacia niveles medios.",
+    "appearance": "Manto gris oscuro uniforme y espeso, asociado a lluvia o nieve persistente.",
+    "composition": "Gotitas de agua, cristales de hielo y precipitación.",
+    "weather_meaning": "Indican lluvia o nieve continua de larga duración.",
+    "interesting_fact": "A diferencia del cumulonimbo, no suelen presentar estructuras convectivas muy marcadas.",
+    "category_reason": "Se incluyen en las nubes bajas porque su base se encuentra cerca de la superficie, aunque su espesor sea considerable."
+  },
+  {
+    "id": 10,
+    "code": "Sc",
+    "name": "Estratocúmulos",
+    "category": "bajas",
+    "image": "assets/images/Sc.jpg",
+    "definition": "Nubes bajas dispuestas en capas o bancos con elementos redondeados.",
+    "altitude": "Se sitúan normalmente por debajo de los 2000 m.",
+    "appearance": "Capas extensas con masas, rollos o bloques redondeados, de color blanco o gris.",
+    "composition": "Principalmente gotitas de agua.",
+    "weather_meaning": "Suelen asociarse a tiempo estable o ambiente húmedo, con poca precipitación significativa.",
+    "interesting_fact": "Son muy frecuentes y pueden cubrir gran parte del cielo sin generar lluvia intensa.",
+    "category_reason": "Pertenecen a las nubes bajas porque su base se localiza a poca altitud."
+  },
+  {
+    "id": 11,
+    "code": "St",
+    "name": "Estratos",
+    "category": "bajas",
+    "image": "assets/images/St.jpg",
+    "definition": "Nubes grises en forma de capa uniforme que cubren grandes extensiones del cielo.",
+    "altitude": "Se encuentran a baja altura, generalmente por debajo de los 2000 m.",
+    "appearance": "Aspecto plano, homogéneo y extendido, con muy poca estructura visible.",
+    "composition": "Gotitas de agua; en ambientes fríos también pueden contener cristales de hielo.",
+    "weather_meaning": "Pueden producir llovizna, niebla o un ambiente gris y húmedo.",
+    "interesting_fact": "Cuando se sitúan muy cerca del suelo, pueden confundirse con niebla.",
+    "category_reason": "Se clasifican como nubes bajas porque se forman y permanecen cerca de la superficie."
+  },
+
+  {
+
+  "Ac-N001.jpg": "Altocumulus en patrón ondulado bien marcado, formando bandas paralelas que cubren gran parte del cielo. Presenta textura granulada con variaciones de densidad y claros entre las ondas, iluminadas por luz cálida de atardecer que resalta su relieve y profundidad en niveles medios.",
+
+  "Ac-N016.jpg": "Altocumulus dispersos en forma de parches irregulares, con bordes suaves y ligera iluminación solar. Se distribuyen horizontalmente con amplios espacios de cielo despejado, generando una apariencia fragmentada y ligera.",
+
+  "Ac-N035.jpg": "Altocumulus formando un manto continuo observado desde altura, con textura acolchonada y uniforme. Las células presentan sombras suaves entre sí, creando una superficie densa y homogénea que cubre completamente el campo visual.",
+
+  "Ac-N041.jpg": "Altocumulus de pequeño tamaño en patrón repetitivo tipo “cielo aborregado”, con múltiples elementos redondeados distribuidos de manera uniforme. La separación entre ellos permite visualizar claramente el fondo azul del cielo.",
+
+  "Ac-N089.jpg": "Altocumulus lenticularis de forma elíptica bien definida, con bordes suaves y apariencia lisa. La nube presenta una estructura simétrica y estable, destacándose claramente sobre el fondo del cielo.",
+
+  "Ac-N100.jpg": "Altocumulus en capa discontinua compuesta por elementos pequeños y compactos, distribuidos homogéneamente. Presenta una textura fina y granulada con iluminación uniforme.",
+
+  "Ac-N106.jpg": "Altocumulus organizados en bandas onduladas bajo un cielo grisáceo, con bordes difusos y estructura poco definida. La escena muestra un ambiente húmedo y frío, con reducción de visibilidad en superficie.",
+
+  "Ac-N116.jpg": "Altocumulus formando una capa extensa y densa, cubriendo completamente el cielo con tonalidad gris uniforme. La textura es suave con leves ondulaciones y sin claros visibles.",
+
+  "Ac-N135.jpg": "Altocumulus fragmentados iluminados por el atardecer, con estructuras irregulares y bordes difusos. Presentan tonalidades cálidas que contrastan con el fondo oscuro del horizonte.",
+
+  "Ac-N151.jpg": "Altocumulus lenticularis alargado sobre relieve montañoso, con bordes bien definidos y estructura horizontal. La nube presenta una apariencia suave, compacta y estable.",
+
+  "Ac-N160.jpg": "Altocumulus con desarrollo vertical moderado, mostrando una estructura más voluminosa y densa. Presenta bordes bien definidos y crecimiento hacia arriba que evidencia cierta inestabilidad en niveles medios.",
+
+  "Ac-N164.jpg": "Altocumulus en capa gruesa con textura ondulada y aspecto compacto. Las células se encuentran poco diferenciadas, formando un cielo cubierto con apariencia uniforme.",
+
+  "Ac-N176.jpg": "Altocumulus aislado de pequeño tamaño, con forma redondeada y bordes suaves. Se encuentra sobre un fondo de cielo completamente despejado, destacando por su simplicidad y baja densidad.",
+
+  "Ac-N179.jpg": "Altocumulus con desarrollo vertical moderado, formando una estructura más elevada que los elementos circundantes. Presenta volumen visible y bordes relativamente definidos.",
+
+  "Ac-N180.jpg": "Altocumulus múltiples con desarrollo vertical variable, distribuidos de forma irregular en el cielo. Presentan sombras internas que resaltan su estructura tridimensional.",
+
+  "Ac-N183.jpg": "Altocumulus densos de tonalidad oscura, con apariencia compacta y continua. La nube muestra una estructura pesada con bordes difusos y alta densidad visual.",
+
+  "Ac-N189.jpg": "Altocumulus dispersos en cielo parcialmente despejado, con elementos aislados de tamaño medio. Presentan bordes suaves y distribución irregular.",
+
+  "Ac-N205.jpg": "Altocumulus fragmentados en múltiples células redondeadas, distribuidas homogéneamente. La textura es granular y bien definida, generando un patrón uniforme.",
+
+  "Ac-N209.jpg": "Altocumulus en capa densa cercana al relieve, con estructura compacta y tonalidad oscura. Genera un cielo parcialmente cubierto con apariencia pesada.",
+
+  "Ac-N221.jpg": "Altocumulus dispersos en el horizonte durante el atardecer, con estructuras alargadas y bordes difusos. Reflejan tonos cálidos debido a la baja altura del sol."
+},
+{
+  "As-N001.jpg": "Altostratus en capa extensa con tonalidades cálidas de atardecer, formando un manto continuo con textura suave y difusa. La nube presenta variaciones ligeras de densidad y permite la formación de un arcoíris parcial, evidenciando alta humedad en la atmósfera.",
+
+  "As-N020.jpg": "Altostratus denso con estructura estratificada en bandas horizontales, mostrando tonos rojizos intensos debido a la iluminación solar baja. La capa es continua y presenta zonas más oscuras que indican mayor espesor.",
+  
+  "As-N036.jpg": "Altostratus en transición con áreas más delgadas y otras más densas, iluminado por luz cálida. La nube forma un manto parcialmente continuo con bordes difusos y ligera variación en textura.",
+  
+  "As-N063.jpg": "Altostratus uniforme de tonalidad gris clara, cubriendo completamente el cielo sobre un entorno urbano. Presenta una textura lisa sin estructuras definidas, característica de nubes estratificadas.",
+  
+  "As-N070.jpg": "Altostratus en capa continua sobre paisaje montañoso, con ligera ondulación interna visible como variaciones suaves de tonalidad. La nube se extiende de forma uniforme sin interrupciones.",
+  
+  "As-N072.jpg": "Altostratus denso y homogéneo, formando un manto gris oscuro continuo. La textura es difusa y compacta, sin presencia de claros ni estructuras individuales.",
+  
+  "As-N077.jpg": "Altostratus iluminado por el atardecer con tonos anaranjados intensos, formando una capa continua con ligera variación de densidad. La superficie presenta una apariencia suave y uniforme.",
+  
+  "As-N079.jpg": "Altostratus en capa extensa con desarrollo vertical mínimo, cubriendo el cielo con tonalidad gris clara. Presenta una estructura continua y difusa con variaciones leves en densidad.",
+  
+  "As-N099.jpg": "Altostratus parcialmente delgado con zonas más claras que permiten el paso de luz difusa. La nube mantiene una estructura continua con ligera transparencia en algunos sectores.",
+  
+  "As-N103.jpg": "Altostratus con fuerte iluminación rojiza, mostrando una capa continua con variaciones internas de densidad. La estructura es horizontal y sin interrupciones.",
+  
+  "As-N108.jpg": "Altostratus denso de tonalidad gris oscura sobre un paisaje abierto, con apariencia compacta y continua. La nube genera un cielo completamente cubierto sin claros visibles.",
+  
+  "As-N113.jpg": "Altostratus en transición con bordes irregulares y zonas más delgadas que permiten ver cielo azul. Mantiene una estructura mayormente continua con ligera fragmentación en los extremos.",
+  
+  "As-N131.jpg": "Altostratus con textura ondulada suave, formando una capa extensa con variaciones internas. La nube conserva una apariencia continua sin separación en elementos individuales.",
+  
+  "As-N139.jpg": "Altostratus estratificado con bandas horizontales poco definidas, generando un patrón suave dentro de una capa continua de tonalidad gris.",
+  
+  "As-N158.jpg": "Altostratus con presencia de arcoíris, indicando alta concentración de humedad. La nube actúa como un manto continuo con densidad suficiente para difundir la luz.",
+  
+  "As-N162.jpg": "Altostratus sobre superficie acuática con tonos rojizos reflejados en el agua. La nube forma una capa uniforme con textura suave y continua.",
+  
+  "As-N168.jpg": "Altostratus parcialmente cubierto con presencia de doble arcoíris tenue. Presenta variaciones de densidad dentro de una estructura continua.",
+  
+  "As-N172.jpg": "Altostratus denso sobre superficie marítima, con visibilidad reducida en el horizonte. La nube forma un manto gris uniforme con apariencia pesada.",
+  
+  "As-N179.jpg": "Altostratus iluminado desde arriba con tonos cálidos, mostrando una capa continua con ligera variación en densidad y sombras suaves.",
+  
+  "As-N182.jpg": "Altostratus con desarrollo vertical leve dentro de una capa continua, iluminado por luz solar directa. Presenta tonalidades claras con zonas más densas y compactas."
+},
+
+{
+  "Cb-N001.jpg": "Cumulonimbus con base oscura y desarrollo vertical intenso, generando una cortina de precipitación visible que desciende hacia el suelo. La nube presenta una estructura densa y compacta, iluminada parcialmente por tonos cálidos del atardecer.",
+  
+  "Cb-N003.jpg": "Cumulonimbus de gran desarrollo vertical con estructura masiva y bordes bien definidos, mostrando una torre convectiva prominente. Se observa precipitación en la base y una clara diferenciación entre zonas iluminadas y sombreadas.",
+  
+  "Cb-N027.jpg": "Cumulonimbus activo con base oscura y presencia de descarga eléctrica visible. La nube muestra una estructura densa y turbulenta, con desarrollo vertical significativo y condiciones de tormenta.",
+  
+  "Cb-N028.jpg": "Cumulonimbus en etapa de crecimiento con fuerte desarrollo vertical, formando una torre blanca bien definida sobre el horizonte. Presenta bordes nítidos y una estructura volumétrica marcada.",
+  
+  "Cb-N055.jpg": "Cumulonimbus con base amplia y oscura, extendiéndose horizontalmente mientras mantiene desarrollo vertical. La nube presenta iluminación lateral que resalta su densidad y estructura interna.",
+  
+  "Cb-N058.jpg": "Cumulonimbus en expansión con una base extensa y una parte superior en crecimiento vertical. La estructura muestra una transición entre zonas densas y áreas más iluminadas.",
+  
+  "Cb-N064.jpg": "Cumulonimbus con múltiples torres convectivas, mostrando diferentes niveles de desarrollo vertical. Presenta una estructura compleja con bordes bien definidos y sombras internas.",
+  
+  "Cb-N074.jpg": "Cumulonimbus con desarrollo vertical pronunciado, formando una masa compacta con bordes irregulares. Se observa crecimiento activo en la parte superior de la nube.",
+  
+  "Cb-N075.jpg": "Cumulonimbus con estructura densa y expansión vertical, mostrando una base oscura y una parte superior brillante. La nube presenta gran volumen y textura definida.",
+  
+  "Cb-N089.jpg": "Cumulonimbus con forma de yunque en desarrollo, mostrando expansión horizontal en la parte superior. La base es más oscura, indicando alta concentración de humedad.",
+  
+  "Cb-N104.jpg": "Cumulonimbus en etapa madura con estructura amplia y presencia de precipitación. La nube muestra una combinación de zonas densas y áreas iluminadas por el sol.",
+  
+  "Cb-N105.jpg": "Cumulonimbus con desarrollo vertical intenso y base bien definida, mostrando una masa compacta con bordes nítidos y sombras profundas.",
+  
+  "Cb-N137.jpg": "Cumulonimbus con base oscura y cortinas de precipitación visibles, acompañado de una estructura vertical masiva y densa.",
+  
+  "Cb-N160.jpg": "Cumulonimbus en fase avanzada con yunque bien desarrollado en la parte superior, mostrando expansión horizontal y una base activa con precipitación.",
+  
+  "Cb-N162.jpg": "Cumulonimbus con múltiples niveles de desarrollo, incluyendo una base densa y una parte superior extendida, indicando fuerte actividad convectiva.",
+  
+  "Cb-N174.jpg": "Cumulonimbus con yunque extendido y estructura vertical bien definida, mostrando transición entre crecimiento vertical y expansión horizontal.",
+  
+  "Cb-N179.jpg": "Cumulonimbus con gran volumen y desarrollo vertical, presentando una estructura densa con zonas iluminadas y sombreadas que resaltan su profundidad.",
+  
+  "Cb-N186.jpg": "Cumulonimbus con estructura compleja y múltiples torres convectivas, mostrando crecimiento activo y bordes bien definidos.",
+  
+  "Cb-N194.jpg": "Cumulonimbus iluminado por el atardecer, con tonos cálidos que resaltan su volumen y desarrollo vertical. La base presenta indicios de precipitación.",
+  
+  "Cb-N241.jpg": "Cumulonimbus con desarrollo vertical pronunciado y base oscura, mostrando una estructura compacta y masiva con fuerte presencia en el cielo."
+}
+
+]
