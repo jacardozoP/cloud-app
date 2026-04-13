@@ -1,5 +1,6 @@
 import tkinter as tk
 from ui.home import HomeScreen
+from ui.quiz import QuizScreen
 
 
 

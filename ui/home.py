@@ -1,6 +1,7 @@
 import tkinter as tk
 from ui.catalog import CatalogScreen
 from ui.recognition import RecognitionScreen
+from ui.quiz import QuizScreen
 from PIL import Image, ImageTk
 
 
@@ -56,11 +57,11 @@ class HomeScreen:
         btn_catalog = tk.Button(
             self.main_frame,
             text="Consultar nubes",
-            font=("Courier New", 28, "bold"),
+            font=("Courier New", 24, "bold"),
             bg="#2d6ea3",
             fg="white",
             bd=0,
-            width=30,
+            width=28,
             height=1,
             command=self._open_catalog
         )
@@ -68,17 +69,30 @@ class HomeScreen:
         btn_recognition = tk.Button(
             self.main_frame,
             text="Reconocer nube",
-            font=("Courier New", 28, "bold"),
+            font=("Courier New", 24, "bold"),
             bg="#1f5681",
             fg="white",
             bd=0,
-            width=30,
+            width=28,
             height=1,
             command=self._open_recognition
         )
 
-        canvas.create_window(600, 485, window=btn_catalog)
-        canvas.create_window(600, 600, window=btn_recognition)
+        btn_quiz = tk.Button(
+            self.main_frame,
+            text="Modo Quiz",
+            font=("Courier New", 24, "bold"),
+            bg="#3f8754",
+            fg="white",
+            bd=0,
+            width=28,
+            height=1,
+            command=self._open_quiz
+        )
+
+        canvas.create_window(600, 460, window=btn_catalog)
+        canvas.create_window(600, 560, window=btn_recognition)
+        canvas.create_window(600, 660, window=btn_quiz)
 
     def destroy(self):
         if self.main_frame is not None:
@@ -225,6 +239,11 @@ class HomeScreen:
         self.destroy()
         recognition = RecognitionScreen(self.root, self.show)
         recognition.show()
+
+    def _open_quiz(self):
+        self.destroy()
+        quiz = QuizScreen(self.root, self.show)
+        quiz.pack(fill="both", expand=True)
 
     def _show_category_info(self, category):
         self.destroy()
