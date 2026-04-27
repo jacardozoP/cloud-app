@@ -3,12 +3,19 @@ import random
 import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
+import threading
+from io import BytesIO
 
 
 class QuizScreen(tk.Frame):
     def __init__(self, parent, app):
         super().__init__(parent, bg="#0f172a")
         self.app = app
+        self.use_web = True  # cambiar a True cuando quieras usar Supabase/web
+        self.web_dataset_cache = None
+        self.next_question_cache = None
+        self.image_cache = {}
+        self.preloaded_image_cache = {}
         self.cloud_types = ["Ac", "As", "Cb", "Cc", "Ci", "Cs", "Ct", "Cu", "Ns", "Sc", "St"]
 
         self.type_map = {
@@ -121,7 +128,41 @@ class QuizScreen(tk.Frame):
         self.answered = False
 
         self.build_ui()
-        self.load_next_question()
+        self.after(100, self.load_next_question)
+
+    def load_web_dataset_cache(self):
+        import requests
+
+        if self.web_dataset_cache is not None:
+            return self.web_dataset_cache
+
+        url = "https://yuslpcidllsexfbncqpb.supabase.co/rest/v1/cloud_images"
+
+        headers = {
+            "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1c2xwY2lkbGxzZXhmYm5jcXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyNDQyMzcsImV4cCI6MjA5MjgyMDIzN30.55AemrekkJznuHcFKHjhMh9dEYhabgi_C5B0BTfXCFk",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1c2xwY2lkbGxzZXhmYm5jcXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyNDQyMzcsImV4cCI6MjA5MjgyMDIzN30.55AemrekkJznuHcFKHjhMh9dEYhabgi_C5B0BTfXCFk"
+        }
+
+        params = {
+            "select": "cloud_type,image_url"
+        }
+
+        response = requests.get(url, headers=headers, params=params)
+        data = response.json()
+
+        dataset = {}
+
+        for row in data:
+            cloud_type = row["cloud_type"]
+            image_url = row["image_url"]
+
+            if cloud_type not in dataset:
+                dataset[cloud_type] = []
+
+            dataset[cloud_type].append(image_url)
+
+        self.web_dataset_cache = dataset
+        return dataset
 
     def build_ui(self):
         title = tk.Label(
@@ -143,6 +184,11 @@ class QuizScreen(tk.Frame):
         subtitle.pack(pady=(0, 15))
 
         self.image_label = tk.Label(self, bg="#0f172a")
+        self.image_label.config(
+            text="Preparando quiz...",
+            fg="white",
+            font=("Arial", 12)
+        )
         self.image_label.pack(pady=10)
 
         self.options_frame = tk.Frame(self, bg="#0f172a")
@@ -231,6 +277,14 @@ class QuizScreen(tk.Frame):
                     valid_classes.append(cloud_type)
 
         return valid_classes
+    
+    def get_available_classes_web(self):
+        dataset = self.load_web_dataset_cache()
+        return list(dataset.keys())
+    
+    def get_images_by_class_web(self, cloud_type):
+        dataset = self.load_web_dataset_cache()
+        return dataset.get(cloud_type, [])
 
     def get_images_from_folder(self, folder_path):
         valid_extensions = (".jpg", ".jpeg", ".png", ".webp")
@@ -244,20 +298,33 @@ class QuizScreen(tk.Frame):
             return []
 
     def generate_question(self):
-        available_classes = self.get_available_classes()
+        if self.use_web:
+            available_classes = self.get_available_classes_web()
+        else:
+            available_classes = self.get_available_classes()
 
         if len(available_classes) < 4:
             return None
 
         correct_type = random.choice(available_classes)
-        class_folder = os.path.join(self.dataset_path, correct_type)
 
-        images = self.get_images_from_folder(class_folder)
-        if not images:
-            return None
+        if self.use_web:
+            images = self.get_images_by_class_web(correct_type)
 
-        image_file = random.choice(images)
-        image_path = os.path.join(class_folder, image_file)
+            if not images:
+                return None
+
+            image_path = random.choice(images)
+
+        else:
+            class_folder = os.path.join(self.dataset_path, correct_type)
+
+            images = self.get_images_from_folder(class_folder)
+            if not images:
+                return None
+
+            image_file = random.choice(images)
+            image_path = os.path.join(class_folder, image_file)
 
         wrong_options = random.sample(
             [c for c in available_classes if c != correct_type],
@@ -387,22 +454,116 @@ class QuizScreen(tk.Frame):
         self.load_next_question()
 
     def load_image(self, image_path):
+        self.image_label.config(
+            image="",
+            text="Cargando imagen...",
+            fg="white",
+            font=("Arial", 12),
+            bg="#0f172a"
+        )
+
+        if image_path.startswith("http"):
+
+            if image_path in self.preloaded_image_cache:
+                img = self.preloaded_image_cache.pop(image_path)
+                self.image_cache[image_path] = img
+                self.set_loaded_image(img)
+                return
+            # 🔥 CACHE
+            if image_path in self.image_cache:
+                self.set_loaded_image(self.image_cache[image_path])
+                return
+
+            thread = threading.Thread(
+                target=self.load_image_from_url_thread,
+                args=(image_path,),
+                daemon=True
+            )
+            thread.start()
+        else:
+            self.load_image_from_local(image_path)
+
+    def load_image_from_local(self, image_path):
         try:
             img = Image.open(image_path)
             img.thumbnail((700, 450))
             self.current_image_tk = ImageTk.PhotoImage(img)
             self.image_label.config(image=self.current_image_tk, text="")
         except Exception as e:
-            self.image_label.config(
-                image="",
-                text=f"No se pudo cargar la imagen.\n{e}",
-                fg="white",
-                font=("Arial", 12),
-                bg="#0f172a"
-            )
+            self.show_image_error(e)
+    
+    def load_image_from_url_thread(self, image_url):
+        try:
+            import requests
+
+            response = requests.get(image_url, timeout=10)
+            response.raise_for_status()
+
+            img_data = BytesIO(response.content)
+
+            with Image.open(img_data) as img:
+                img = img.convert("RGB")
+                img.thumbnail((700, 450))
+                img_copy = img.copy()
+
+            self.image_cache[image_url] = img_copy
+            self.after(0, lambda: self.set_loaded_image(img_copy))
+
+        except Exception as e:
+            self.after(0, lambda: self.show_image_error(e))
+
+    def preload_image(self, image_url):
+        if not image_url.startswith("http"):
+            return
+
+        if image_url in self.image_cache:
+            return
+
+        if image_url in self.preloaded_image_cache:
+            return
+
+        def worker():
+            try:
+                import requests
+
+                response = requests.get(image_url, timeout=10)
+                response.raise_for_status()
+
+                img_data = BytesIO(response.content)
+
+                with Image.open(img_data) as img:
+                    img = img.convert("RGB")
+                    img.thumbnail((700, 450))
+                    img_copy = img.copy()
+
+                self.preloaded_image_cache[image_url] = img_copy
+
+            except Exception:
+                pass
+
+        threading.Thread(target=worker, daemon=True).start()
+    
+    def set_loaded_image(self, img):
+        self.current_image_tk = ImageTk.PhotoImage(img)
+        self.image_label.config(image=self.current_image_tk, text="")
+    
+    def show_image_error(self, error):
+        self.image_label.config(
+            image="",
+            text=f"No se pudo cargar la imagen.\n{error}",
+            fg="white",
+            font=("Arial", 12),
+            bg="#0f172a"
+        )
 
     def load_next_question(self):
-        self.current_question = self.generate_question()
+        if self.next_question_cache:
+            self.current_question = self.next_question_cache
+        else:
+            self.current_question = self.generate_question()
+
+        # preparar la siguiente en segundo plano
+        threading.Thread(target=self.preload_next_question, daemon=True).start()
 
         if not self.current_question:
             messagebox.showerror(
@@ -419,12 +580,27 @@ class QuizScreen(tk.Frame):
 
         for btn, option in zip(self.option_buttons, self.current_question["options"]):
             display_name = self.type_map.get(option, option)
+
+            btn.option_code = option
+
             btn.config(
                 text=display_name,
                 state="normal",
                 bg="#1e293b",
+                fg="white",
                 command=lambda opt=option: self.check_answer(opt)
             )
+
+    def preload_next_question(self):
+        try:
+            question = self.generate_question()
+            self.next_question_cache = question
+
+            if question:
+                self.preload_image(question["image_path"])
+
+        except:
+            self.next_question_cache = None
 
     def check_answer(self, selected_option):
         if self.answered:
@@ -436,9 +612,11 @@ class QuizScreen(tk.Frame):
         for btn in self.option_buttons:
             btn.config(state="disabled")
 
-            if btn.cget("text") == correct_type:
+            btn_code = getattr(btn, "option_code", None)
+
+            if btn_code == correct_type:
                 btn.config(bg="#15803d")  # verde
-            elif btn.cget("text") == selected_option and selected_option != correct_type:
+            elif btn_code == selected_option and selected_option != correct_type:
                 btn.config(bg="#b91c1c")  # rojo
 
         self.show_feedback_popup(selected_option, correct_type)
