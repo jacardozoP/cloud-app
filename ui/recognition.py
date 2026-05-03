@@ -3,6 +3,7 @@ from tkinter import filedialog, messagebox
 from PIL import Image, ImageTk
 from data.cloud_repository import get_cloud_by_name
 from ui.components import TopMenuBar
+from logic.ai_predictor import predict_cloud
 
 
 class RecognitionScreen:
@@ -18,12 +19,21 @@ class RecognitionScreen:
         self.density_var = tk.StringVar(value="")
         self.vertical_var = tk.StringVar(value="")
         self.coverage_var = tk.StringVar(value="")
+        self.shape_var = tk.StringVar(value="")
+        self.high_thin_var = tk.StringVar(value="")
 
     def _go_catalog(self):
         from ui.catalog import CatalogScreen
         self.destroy()
         catalog = CatalogScreen(self.root, self.go_home_callback)
         catalog.show()
+
+    def _go_quiz(self):
+        from ui.quiz import QuizScreen
+
+        self.destroy()
+        quiz = QuizScreen(self.root, self.go_home_callback)
+        quiz.pack(fill="both", expand=True)
 
     def _refresh_recognition(self):
         self.destroy()
@@ -42,7 +52,8 @@ class RecognitionScreen:
             self.main_frame,
             on_home=self._go_home,
             on_catalog=self._go_catalog,
-            on_recognition=self._refresh_recognition
+            on_recognition=self._refresh_recognition,
+            on_quiz=self._go_quiz
         )
         menu.pack(fill="x")
 
@@ -156,16 +167,19 @@ class RecognitionScreen:
         )
         self.result_title.pack(anchor="w", padx=15, pady=(10, 5))
 
-        self.result_content = tk.Label(
+        self.result_content = tk.Text(
             self.result_frame,
-            text="Aún no se ha realizado el reconocimiento.",
-            font=("Arial", 12),
+            height=9,
+            font=("Arial", 11),
             bg="white",
             fg="#35576e",
-            justify="left",
-            wraplength=650
+            wrap="word",
+            bd=0
         )
-        self.result_content.pack(anchor="w", padx=15, pady=(0, 15))
+        self.result_content.pack(fill="x", padx=15, pady=(0, 15))
+
+        self.result_content.insert("1.0", "Aún no se ha realizado el reconocimiento.")
+        self.result_content.config(state="disabled")
 
         tk.Label(
             right_panel,
@@ -191,6 +205,19 @@ class RecognitionScreen:
             right_panel,
             "¿Cubre gran parte del cielo como capa?",
             self.coverage_var
+
+        )
+
+        self._create_question_block(
+            right_panel,
+            "¿Tiene bordes definidos o forma clara?",
+            self.shape_var
+        )
+
+        self._create_question_block(
+            right_panel,
+            "¿Se ve alta y delgada como pluma?",
+            self.high_thin_var
         )
 
         tk.Button(
@@ -206,7 +233,22 @@ class RecognitionScreen:
             bd=0,
             cursor="hand2",
             command=self._analyze_cloud
-        ).pack(pady=(25, 12))
+        ).pack(pady=(15, 6))
+
+        tk.Button(
+            right_panel,
+            text="Comparar con IA",
+            font=("Arial", 12, "bold"),
+            width=18,
+            height=2,
+            bg="#7c3aed",
+            fg="white",
+            activebackground="#6d28d9",
+            activeforeground="white",
+            bd=0,
+            cursor="hand2",
+            command=self._compare_with_ai
+        ).pack(pady=(0, 6))
 
         tk.Button(
             right_panel,
@@ -221,7 +263,7 @@ class RecognitionScreen:
             bd=0,
             cursor="hand2",
             command=self._go_home
-        ).pack(pady=(0, 20))
+        ).pack(pady=(0, 10))
 
     def _create_question_block(self, parent, question_text, variable):
         block = tk.Frame(parent, bg="#f8fbff", highlightthickness=1, highlightbackground="#d7e8f5")
@@ -300,38 +342,158 @@ class RecognitionScreen:
         density = self.density_var.get()
         vertical = self.vertical_var.get()
         coverage = self.coverage_var.get()
+        shape = self.shape_var.get()
+        high_thin = self.high_thin_var.get()
 
-        if not density or not vertical or not coverage:
+        if not density or not vertical or not coverage or not shape or not high_thin:
             messagebox.showwarning("Faltan datos", "Debes responder todas las preguntas.")
             return
+        
+        
+        result = self._get_suggestion(density, vertical, coverage, shape, high_thin)
+        cloud_name = result["name"]
 
-        result = self._get_suggestion(density, vertical, coverage)
-
-        cloud = get_cloud_by_name(result)
+        cloud = get_cloud_by_name(cloud_name)
 
         if cloud:
-            text = f"Nube probable: {cloud['name']}\n\n"
+            text = f"Nube probable: {cloud['name']}\n"
+            text += f"Confianza: {result['confidence']}\n"
+            text += f"Razón: {result['reason']}\n\n"
+            if result["alternatives"]:
+                text += f"También podría parecerse a: {', '.join(result['alternatives'])}\n"
+
+            text += "\n"
             text += f"Definición: {cloud['definition']}\n\n"
-            text += f"Características: {cloud['characteristics']}\n\n"
+            text += f"Apariencia: {cloud.get('appearance', 'No disponible')}\n\n"
             text += f"Altitud: {cloud['altitude']}"
         else:
-            text = f"Nube probable: {result}\n(No hay datos disponibles)"
+            text = f"Nube probable: {cloud_name}\n"
+            text += f"Confianza: {result['confidence']}\n"
+            text += f"Razón: {result['reason']}\n\n"
+            if result["alternatives"]:
+                text += f"También podría parecerse a: {', '.join(result['alternatives'])}\n"
 
-        self.result_content.config(text=text)
+            text += "\n"
+            text += "No hay datos específicos disponibles para esta combinación."
 
-    def _get_suggestion(self, density, vertical, coverage):
-        if vertical == "si" and density == "si":
-            return "Cumulonimbus"
-        if vertical == "si" and density == "no":
-            return "Cumulus"
-        if coverage == "si" and density == "si":
-            return "Nimbostratus"
-        if coverage == "si" and density == "no":
-            return "Stratus"
-        if coverage == "no" and vertical == "no" and density == "no":
-            return "Cirrus o Altocumulus"
-        return "Stratocumulus"
+        self.result_content.config(state="normal")
+        self.result_content.delete("1.0", "end")
+        self.result_content.insert("1.0", text)
+        self.result_content.config(state="disabled")
 
+    def _compare_with_ai(self):
+        if not self.selected_image_path:
+            messagebox.showwarning("Falta imagen", "Primero debes cargar una imagen.")
+            return
+
+        try:
+            result = predict_cloud(self.selected_image_path)
+
+            cloud_names = {
+                "Ac": "Altocúmulos",
+                "As": "Altostratos",
+                "Cb": "Cumulonimbos",
+                "Cc": "Cirrocúmulos",
+                "Ci": "Cirros",
+                "Cs": "Cirrostratos",
+                "Ct": "Estelas de condensación",
+                "Cu": "Cúmulos",
+                "Ns": "Nimbostratos",
+                "Sc": "Estratocúmulos",
+                "St": "Estratos"
+            }
+
+            cloud_name = cloud_names.get(result["code"], result["code"])
+            confidence_percent = result["confidence"] * 100
+
+            ai_text = (
+                "\n\n--- Comparación con IA ---\n"
+                f"Resultado IA: {cloud_name} ({result['code']})\n"
+                f"Confianza IA: {confidence_percent:.2f}%"
+            )
+
+            self.result_content.config(state="normal")
+            self.result_content.insert("end", ai_text)
+            self.result_content.config(state="disabled")
+
+        except Exception as error:
+            messagebox.showerror("Error IA", f"No se pudo comparar con IA.\n{error}")
+
+    def _get_suggestion(self, density, vertical, coverage, shape, high_thin):
+        scores = {
+            "Cumulonimbus": 0,
+            "Cumulus": 0,
+            "Cirrus": 0,
+            "Nimbostratus": 0,
+            "Stratus": 0,
+            "Altocumulus": 0,
+            "Stratocumulus": 0
+        }
+
+        reasons = {
+            "Cumulonimbus": [],
+            "Cumulus": [],
+            "Cirrus": [],
+            "Nimbostratus": [],
+            "Stratus": [],
+            "Altocumulus": [],
+            "Stratocumulus": []
+        }
+
+        if density == "si":
+            scores["Cumulonimbus"] += 2
+            scores["Nimbostratus"] += 2
+            scores["Stratocumulus"] += 1
+            reasons["Cumulonimbus"].append("se ve densa u oscura")
+            reasons["Nimbostratus"].append("se ve densa u oscura")
+
+        if vertical == "si":
+            scores["Cumulonimbus"] += 3
+            scores["Cumulus"] += 3
+            reasons["Cumulonimbus"].append("tiene desarrollo vertical")
+            reasons["Cumulus"].append("tiene desarrollo vertical")
+
+        if coverage == "si":
+            scores["Nimbostratus"] += 3
+            scores["Stratus"] += 3
+            scores["Stratocumulus"] += 2
+            reasons["Nimbostratus"].append("cubre gran parte del cielo")
+            reasons["Stratus"].append("cubre gran parte del cielo")
+
+        if shape == "si":
+            scores["Cumulus"] += 2
+            scores["Altocumulus"] += 2
+            scores["Stratocumulus"] += 1
+            reasons["Cumulus"].append("presenta forma o bordes definidos")
+            reasons["Altocumulus"].append("presenta elementos definidos")
+
+        if high_thin == "si":
+            scores["Cirrus"] += 5
+            reasons["Cirrus"].append("se ve alta y delgada, tipo pluma")
+
+        ranked = sorted(scores.items(), key=lambda item: item[1], reverse=True)
+
+        main_name = ranked[0][0]
+        main_score = ranked[0][1]
+
+        if main_score >= 5:
+            confidence = "Alta"
+        elif main_score >= 3:
+            confidence = "Media"
+        else:
+            confidence = "Baja"
+
+        main_reasons = reasons.get(main_name, [])
+        reason_text = ", ".join(main_reasons) if main_reasons else "coincide parcialmente con las respuestas dadas"
+
+        alternatives = [name for name, score in ranked[1:4] if score > 0]
+
+        return {
+            "name": main_name,
+            "confidence": confidence,
+            "reason": reason_text,
+            "alternatives": alternatives
+        }
     def _go_home(self):
         self.destroy()
         self.go_home_callback()

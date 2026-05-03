@@ -1,9 +1,7 @@
 import tkinter as tk
-from ui.home import HomeScreen
-from ui.quiz import QuizScreen
+from ui.home import HomeScreen  
 
-
-
+    
 def main():
     root = tk.Tk()
     root.title("AeroCloud System")
@@ -13,7 +11,7 @@ def main():
     app = HomeScreen(root)
     app.show()
 
-    root.mainloop()
+    root.mainloop() 
 
 
 if __name__ == "__main__":

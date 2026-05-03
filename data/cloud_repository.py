@@ -25,9 +25,36 @@ def get_clouds_by_category(category):
 
 def get_cloud_by_name(name):
     clouds = load_clouds()
+
+    aliases = {
+        "Altocumulus": "Ac",
+        "Altostratus": "As",
+        "Cumulonimbus": "Cb",
+        "Cirrocumulus": "Cc",
+        "Cirrus": "Ci",
+        "Cirrostratus": "Cs",
+        "Cumulus": "Cu",
+        "Nimbostratus": "Ns",
+        "Stratocumulus": "Sc",
+        "Stratus": "St",
+    }
+
+    search_code = aliases.get(name, "").lower()
+
     for cloud in clouds:
-        if cloud["name"].lower() == name.lower():
+        # 🔥 IGNORA bloques que no son nubes principales
+        if not isinstance(cloud, dict):
+            continue
+
+        if "name" not in cloud or "code" not in cloud:
+            continue
+
+        if cloud.get("name", "").lower() == name.lower():
             return cloud
+
+        if search_code and cloud.get("code", "").lower() == search_code:
+            return cloud
+
     return None
 
 

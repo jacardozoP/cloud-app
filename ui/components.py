@@ -4,7 +4,7 @@ from tkinter import messagebox
 
 
 class TopMenuBar(tk.Frame):
-    def __init__(self, parent, on_home, on_catalog, on_recognition):
+    def __init__(self, parent, on_home, on_catalog, on_recognition, on_quiz=None):
         super().__init__(parent, bg="#0f2f44", height=54)
         self.pack_propagate(False)
 
@@ -26,6 +26,8 @@ class TopMenuBar(tk.Frame):
         self._make_button(right, "Inicio", on_home).pack(side="left", padx=6, pady=8)
         self._make_button(right, "Consultar nubes", on_catalog).pack(side="left", padx=6, pady=8)
         self._make_button(right, "Reconocimiento", on_recognition).pack(side="left", padx=6, pady=8)
+        if on_quiz is not None:
+            self._make_button(right, "Quiz", on_quiz).pack(side="left", padx=6, pady=8)
         self._make_button(right, "Acerca de", self._show_about).pack(side="left", padx=6, pady=8)
 
     def _make_button(self, parent, text, command):
@@ -49,3 +51,14 @@ class TopMenuBar(tk.Frame):
             "Acerca de",
             "AeroCloud\n\nAplicación de escritorio en Python para consulta y reconocimiento asistido de nubes."
         )
+
+def style_button(btn, bg, hover_bg):
+    btn.config(
+        bd=0,
+        relief="flat",
+        cursor="hand2",
+        activeforeground="white"
+    )
+
+    btn.bind("<Enter>", lambda e: btn.config(bg=hover_bg))
+    btn.bind("<Leave>", lambda e: btn.config(bg=bg))

@@ -1,0 +1,8 @@
+# config.py
+
+USE_WEB_DATASET = True
+
+SUPABASE_URL = "https://yuslpcidllsexfbncqpb.supabase.co"
+
+SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1c2xwY2lkbGxzZXhmYm5jcXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyNDQyMzcsImV4cCI6MjA5MjgyMDIzN30.55AemrekkJznuHcFKHjhMh9dEYhabgi_C5B0BTfXCFk"
+

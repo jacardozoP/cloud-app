@@ -5,14 +5,16 @@ from tkinter import messagebox
 from PIL import Image, ImageTk
 import threading
 from io import BytesIO
+from data import data_service
+
+import config
 
 
 class QuizScreen(tk.Frame):
     def __init__(self, parent, app):
         super().__init__(parent, bg="#0f172a")
         self.app = app
-        self.use_web = True  # cambiar a True cuando quieras usar Supabase/web
-        self.web_dataset_cache = None
+        self.use_web = config.USE_WEB_DATASET  # cambiar a True cuando quieras usar Supabase/web
         self.next_question_cache = None
         self.image_cache = {}
         self.preloaded_image_cache = {}
@@ -130,40 +132,6 @@ class QuizScreen(tk.Frame):
         self.build_ui()
         self.after(100, self.load_next_question)
 
-    def load_web_dataset_cache(self):
-        import requests
-
-        if self.web_dataset_cache is not None:
-            return self.web_dataset_cache
-
-        url = "https://yuslpcidllsexfbncqpb.supabase.co/rest/v1/cloud_images"
-
-        headers = {
-            "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1c2xwY2lkbGxzZXhmYm5jcXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyNDQyMzcsImV4cCI6MjA5MjgyMDIzN30.55AemrekkJznuHcFKHjhMh9dEYhabgi_C5B0BTfXCFk",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1c2xwY2lkbGxzZXhmYm5jcXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyNDQyMzcsImV4cCI6MjA5MjgyMDIzN30.55AemrekkJznuHcFKHjhMh9dEYhabgi_C5B0BTfXCFk"
-        }
-
-        params = {
-            "select": "cloud_type,image_url"
-        }
-
-        response = requests.get(url, headers=headers, params=params)
-        data = response.json()
-
-        dataset = {}
-
-        for row in data:
-            cloud_type = row["cloud_type"]
-            image_url = row["image_url"]
-
-            if cloud_type not in dataset:
-                dataset[cloud_type] = []
-
-            dataset[cloud_type].append(image_url)
-
-        self.web_dataset_cache = dataset
-        return dataset
-
     def build_ui(self):
         title = tk.Label(
             self,
@@ -279,12 +247,10 @@ class QuizScreen(tk.Frame):
         return valid_classes
     
     def get_available_classes_web(self):
-        dataset = self.load_web_dataset_cache()
-        return list(dataset.keys())
+        return data_service.get_quiz_classes()
     
     def get_images_by_class_web(self, cloud_type):
-        dataset = self.load_web_dataset_cache()
-        return dataset.get(cloud_type, [])
+        return data_service.get_quiz_images(cloud_type)
 
     def get_images_from_folder(self, folder_path):
         valid_extensions = (".jpg", ".jpeg", ".png", ".webp")

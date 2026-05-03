@@ -3,6 +3,8 @@ from ui.catalog import CatalogScreen
 from ui.recognition import RecognitionScreen
 from ui.quiz import QuizScreen
 from PIL import Image, ImageTk
+from ui.components import style_button
+from ui.ai_screen import AIScreen
 
 
 class HomeScreen:
@@ -89,10 +91,33 @@ class HomeScreen:
             height=1,
             command=self._open_quiz
         )
+        btn_ai = tk.Button(
+            self.main_frame,
+            text="IA",
+            font=("Courier New", 18, "bold"),
+            bg="#7c3aed",
+            fg="white",
+            bd=0,
+            width=6,
+            height=2,
+            command=self._open_ai
+        )
+
+        style_button(btn_ai, "#7c3aed", "#8b5cf6")
+
+        style_button(btn_catalog, "#2d6ea3", "#3b82b6")
+        style_button(btn_recognition, "#1f5681", "#2b6fa3")
+        style_button(btn_quiz, "#3f8754", "#4caf6a")
 
         canvas.create_window(600, 460, window=btn_catalog)
         canvas.create_window(600, 560, window=btn_recognition)
         canvas.create_window(600, 660, window=btn_quiz)
+        canvas.create_window(90, self.root.winfo_screenheight() - 90, window=btn_ai)
+
+    def _open_ai(self):
+        self.destroy()
+        ai_screen = AIScreen(self.root, self.show)
+        ai_screen.show()
 
     def destroy(self):
         if self.main_frame is not None:
@@ -234,6 +259,7 @@ class HomeScreen:
         self.destroy()
         catalog = CatalogScreen(self.root, self.show)
         catalog.show()
+    
 
     def _open_recognition(self):
         self.destroy()

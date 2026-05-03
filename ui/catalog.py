@@ -27,6 +27,13 @@ class CatalogScreen:
         recognition = RecognitionScreen(self.root, self.go_home_callback)
         recognition.show()
 
+    def _go_quiz(self):
+        from ui.quiz import QuizScreen
+
+        self.destroy()
+        quiz = QuizScreen(self.root, self.go_home_callback)
+        quiz.pack(fill="both", expand=True)
+
     def show(self):
         if self.main_frame is not None:
             self.main_frame.destroy()
@@ -37,7 +44,8 @@ class CatalogScreen:
             self.main_frame,
             on_home=self._go_home,
             on_catalog=self._refresh_catalog,
-            on_recognition=self._go_recognition
+            on_recognition=self._go_recognition,
+            on_quiz=self._go_quiz
         )
         menu.pack(fill="x")
 
@@ -128,6 +136,19 @@ class CatalogScreen:
 
         self._populate_cards()
 
+    def _add_card_hover(self, card, canvas):
+        def on_enter(e):
+            card.config(bg="#e6f2ff", highlightbackground="#7fb3e6")
+            canvas.config(bg="#e6f2ff")
+
+        def on_leave(e):
+            card.config(bg="#f9fcff", highlightbackground="#c8deed")
+            canvas.config(bg="white")
+
+        card.bind("<Enter>", on_enter)
+        card.bind("<Leave>", on_leave)
+
+
     def _populate_cards(self):
         if self.category_filter:
             clouds = get_clouds_by_category(self.category_filter)
@@ -147,16 +168,18 @@ class CatalogScreen:
         for index, cloud in enumerate(clouds):
             row = index // columns
             col = index % columns
-
+    
             card = tk.Frame(
                 self.cards_container,
-                bg="#f9fcff",
+                bg="#ffffff",
                 width=card_width,
                 height=card_height,
                 highlightthickness=1,
                 highlightbackground="#c8deed",
                 cursor="hand2"
             )
+
+
             card.grid(row=row, column=col, padx=18, pady=18)
             card.grid_propagate(False)
 
@@ -168,7 +191,11 @@ class CatalogScreen:
                 bd=0,
                 cursor="hand2"
             )
+
+
             image_canvas.pack(fill="both", expand=True)
+            
+            self._add_card_hover(card, image_canvas)
 
             image_path = cloud.get("image", "")
             loaded_image = self._load_cover_image(image_path, image_width, image_height)
@@ -190,7 +217,7 @@ class CatalogScreen:
             image_canvas.create_text(
                 16, 22,
                 anchor="nw",
-                text=cloud["name"],
+                text=cloud.get("name", cloud.get("type", "Nube")),
                 font=("Arial", 16, "bold"),
                 fill="#1a1a1a"
             )
@@ -199,7 +226,7 @@ class CatalogScreen:
             image_canvas.create_text(
                 14, 20,
                 anchor="nw",
-                text=cloud["name"],
+                text=cloud.get("name", cloud.get("type", "Nube")),
                 font=("Arial", 16, "bold"),
                 fill="#f7fbff"
             )
